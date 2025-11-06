@@ -1,0 +1,229 @@
+{
+  "agent": {
+    "name": "LinkedIn AutoApply Agent",
+    "owner": "Aryan Agrawal",
+    "created_at": "2025-10-26",
+    "notes": "Single-sheet mode enabled. Do not store passwords. Config file should remain local."
+  },
+  "personal": {
+    "full_name": "Aryan Agrawal",
+    "email": "aryanag1700@gmail.com",
+    "phone": "+91 7297976010",
+    "current_city": "Bangalore, India",
+    "linkedin_url": "https://www.linkedin.com/in/aryanagr/",
+    "github_url": "https://github.com/aryanagr",
+    "leetcode_url": "https://leetcode.com/u/aryanagr/"
+  },
+  "security": {
+    "credentials_source": "env",
+    "linkedin_email_env_var": "LINKEDIN_EMAIL",
+    "linkedin_password_env_var": "LINKEDIN_PASSWORD",
+    "openai_api_key_env_var": "OPENAI_API_KEY",
+    "openai_usage_allowed": false,
+    "openai_manual_opt_in_prompt": "To use OpenAI for cover letter generation you must set security.openai_usage_allowed = true in agent_config.json or export AGENT_ENABLE_OPENAI=true in env. This must be deliberate.",
+    "mask_secrets_in_logs": true,
+    "redact_pii_before_external": true,
+    "pii_redaction_replacement": "[REDACTED]",
+    "allowed_prompt_templates": [
+      "cover_letter_short",
+      "cover_letter_technical",
+      "screening_star_answer"
+    ],
+    "max_openai_tokens": 400,
+    "openai_rate_limit_per_minute": 20,
+    "never_send_resume_contents_to_external": true,
+    "never_write_passwords_to_disk": true,
+    "env_file_permissions_recommendation": "600 (owner read/write only)",
+    "notes": "OpenAI usage is opt-in (default false). The agent will redact personal info before any external call and never send full resume text."
+  },
+  "resumes": {
+    "dynamic_selection": true,
+    "files": [
+      "/mnt/data/Aryan Agrawal Software Developer Swiggy.pdf",
+      "/mnt/data/Aryan_Agrawal_FullStack_Software_Engineer.pdf",
+      "/mnt/data/Aryan_Agrawal_Resume_2Years_Experience.pdf",
+      "/mnt/data/Aryan_Agrawal_Software_Engineer.pdf"
+    ],
+    "selection_rules": {
+      "frontend_keyword_match": ["react", "nextjs", "typescript", "redux"],
+      "backend_keyword_match": ["python", "django", "rest api", "mysql", "docker"],
+      "react_native_match": ["react-native", "ota", "codepush"]
+    }
+  },
+  "job_preferences": {
+    "target_roles": [
+      "Frontend Developer",
+      "Full Stack Developer",
+      "React Native Developer",
+      "Software Engineer",
+      "Backend Engineer"
+    ],
+    "preferred_locations": [
+      "Bangalore",
+      "Mumbai",
+      "Remote",
+      "Out of India"
+    ],
+    "salary_expectation": "Above ₹20 LPA",
+    "work_authorization": "Authorized to work in India; open to relocation",
+    "companies_prioritize": [
+      "Swiggy",
+      "Gojek",
+      "Meesho",
+      "Walmart",
+      "Razorpay",
+      "Zomato",
+      "Flipkart",
+      "PhonePe"
+    ],
+    "companies_skip": [
+      "Consultancies",
+      "Staffing agencies"
+    ]
+  },
+  "experience_keywords": [
+    "react",
+    "react-native",
+    "python",
+    "django",
+    "nextjs",
+    "rest api",
+    "docker",
+    "typescript",
+    "redux",
+    "git",
+    "mysql"
+  ],
+  "cover_letter": {
+    "mode": "dynamic",
+    "tone": "professional_warm_technical",
+    "template_notes": "Generate a 3-paragraph cover letter: 1) one-line hook referencing company & role, 2) 2-3 lines of relevant experience and measurable impact, 3) 1 line of cultural fit and CTA. Keep < 200 words."
+  },
+  "application_style": {
+    "default_mode": "detailed",
+    "quick_mode_available": true,
+    "detailed_settings": {
+      "screening_answer_method": "STAR",
+      "use_screening_library": true,
+      "max_coverletter_length_words": 220
+    },
+    "quick_settings": {
+      "skip_cover_letter": false,
+      "minimal_answers": true
+    }
+  },
+  "screening_library": {
+    "1_major_project_challenge": "Designed and implemented an in-house Lead Management System (LMS) at Onsitego to automate lead capture, assignment, and tracking. Reduced manual handling errors and improved operational efficiency by 30%+.",
+    "2_technical_problem_solving": "Built a dynamic backend payment gateway with configurable routing and reusable Django modules, improving scalability and reducing deployment complexity.",
+    "3_measurable_impact": "Improved SEO and app performance by 600% on mobile and 180% on desktop, reducing user drop-offs by 60% through lazy loading, dynamic imports, and caching optimizations.",
+    "4_core_strength": "Strong ownership mindset with a focus on scalable architecture, clean code, and reliable delivery. Hands-on across full-stack — React/Next.js frontends to Django/Python microservices and CI/CD.",
+    "5_passion_motivation": "Passionate about building high-impact, user-centric products. Thrive in fast-paced, product-driven environments focused on innovation, scalability, and impact."
+  },
+  "automation": {
+    "implementation": "python_selenium",
+    "browser": "chrome",
+    "headless_default": false,
+    "easy_apply_only": true,
+    "max_applications_per_run": 50,
+    "delay_between_applications_seconds": 6,
+    "resume_attach_priority": "dynamic",
+    "cover_letter_attach": true,
+    "screenshot_on_submit": true
+  },
+  "tracking": {
+    "single_sheet_mode": true,
+    "single_sheet_path": "Applications_Master.csv",
+    "log_columns": [
+      "application_id",
+      "date_applied_iso",
+      "job_title",
+      "company",
+      "role_type",
+      "job_location",
+      "job_posting_url",
+      "source",
+      "method",
+      "resume_used",
+      "cover_letter_used",
+      "skills_required",
+      "skills_matched",
+      "skills_matched_count",
+      "salary_field_in_posting",
+      "salary_expected_range",
+      "status",
+      "rejection_reason",
+      "rejection_reason_category",
+      "response_received_bool",
+      "response_date_iso",
+      "interview_stage",
+      "offer_amount",
+      "follow_up_sent_date_iso",
+      "next_follow_up_date_iso",
+      "days_since_apply",
+      "time_to_response_days",
+      "notes",
+      "raw_screening_questions_and_answers"
+    ],
+    "status_values": [
+      "applied",
+      "under_review",
+      "interview_scheduled",
+      "rejected",
+      "offer_received",
+      "withdrawn",
+      "not_eligible"
+    ],
+    "rejection_reason_categories": [
+      "lack_of_required_experience",
+      "location_not_supported",
+      "salary_mismatch",
+      "role_filled",
+      "auto_screen_fail",
+      "candidate_withdrew",
+      "other"
+    ],
+    "follow_up_policy_days": 5,
+    "weekly_report_day": "Sunday",
+    "weekly_report_path": "weekly_reports/"
+  },
+  "dashboard": {
+    "note": "Dashboard metrics are computed from the single master sheet. See README notes for formulas."
+  },
+  "privacy_and_safety": {
+    "never_store_passwords": true,
+    "sensitive_data_notes": "Do not store passport numbers, bank details, or other PII beyond what is required for job applications. Config file presumed local and under user's control."
+  },
+  "runtime_settings": {
+    "log_level": "info",
+    "dry_run_mode": false,
+    "max_runtime_hours": 8
+  },
+  "ai_provider": {
+  "default_provider_env_var": "AGENT_AI_PROVIDER",
+  "supported_providers": ["openai", "gemini", "claude", "mistral", "auto"],
+  "provider_settings": {
+    "openai": {
+      "api_key_env": "OPENAI_API_KEY",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "model": "gpt-4o-mini"
+    },
+    "gemini": {
+      "api_key_env": "GEMINI_API_KEY",
+      "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      "model": "gemini-2.5-flash"
+    },
+    "claude": {
+      "api_key_env": "CLAUDE_API_KEY",
+      "endpoint": "https://api.anthropic.com/v1/messages",
+      "model": "claude-3-haiku-20240307"
+    },
+    "mistral": {
+      "api_key_env": "MISTRAL_API_KEY",
+      "endpoint": "https://api.mistral.ai/v1/chat/completions",
+      "model": "mistral-small"
+    }
+  },
+  "use_fallback_to_gemini_if_openai_quota_exceeded": true
+}
+
+}
