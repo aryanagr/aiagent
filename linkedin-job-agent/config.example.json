@@ -1,0 +1,36 @@
+{
+  "candidate": {
+    "name": "Aryan Agrawal",
+    "email": "aryanag1700@gmail.com",
+    "linkedin_application_email": "aagrawal001703@gmail.com",
+    "phone": "+91 7297976010",
+    "city": "Bangalore, India",
+    "years_experience": 4,
+    "resume": "../resume/Aryan Agrawal Resume.pdf"
+  },
+  "search": {
+    "titles": ["Backend Engineer", "Software Development Engineer", "Full Stack Engineer", "Python Developer", "Django Developer"],
+    "locations": ["Bengaluru", "Remote India", "India"],
+    "minimum_base_lpa": 28,
+    "minimum_match_score": 65,
+    "posted_within_hours": 72,
+    "max_jobs_per_run": 20
+  },
+  "answers": {
+    "notice_period_days": null,
+    "current_base_lpa": null,
+    "expected_base_lpa": 28,
+    "work_authorized_india": true,
+    "requires_sponsorship": false,
+    "willing_to_relocate": true
+  },
+  "automation": {
+    "mode": "dry-run",
+    "linkedin_profile_dir": ".browser-profile",
+    "headless": false,
+    "submit_applications": false,
+    "send_outreach": false,
+    "daily_application_limit": 20,
+    "daily_outreach_limit": 10
+  }
+}
