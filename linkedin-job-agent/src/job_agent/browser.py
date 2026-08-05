@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 
 from playwright.sync_api import Page, sync_playwright
 
-from .core import AnswerEngine, Job, Ledger, salary_eligible, skill_score
+from .core import AnswerEngine, Job, Ledger, java_spring_fresher_exception, salary_eligible, skill_score
 
 
 class LinkedInAgent:
@@ -62,7 +62,8 @@ class LinkedInAgent:
                 job = self.enrich(page, job)
                 eligible = salary_eligible(job.salary_text, self.config["search"]["minimum_base_lpa"])
                 score = skill_score(job.description, self.resume_text)
-                if eligible is False or score < self.config["search"]["minimum_match_score"]:
+                java_exception = java_spring_fresher_exception(job.description, job.salary_text)
+                if eligible is False or (score < self.config["search"]["minimum_match_score"] and not java_exception):
                     self.ledger.append("skipped", {"url": job.url, "reason": "salary_or_match", "score": score})
                     continue
                 stats["qualified"] += 1

@@ -41,6 +41,24 @@ def salary_eligible(text: str, minimum_base_lpa: float) -> bool | None:
     return high >= minimum_base_lpa
 
 
+def expected_salary_lpa(company_max_lpa: float | None, benchmark_lpa: float = 28) -> float:
+    """Return the verified expected salary for a disclosed company maximum."""
+    if company_max_lpa is None:
+        return benchmark_lpa
+    if company_max_lpa < benchmark_lpa:
+        return company_max_lpa
+    return max(benchmark_lpa, round(company_max_lpa * 0.8, 2))
+
+
+def java_spring_fresher_exception(description: str, salary_text: str, minimum_lpa: float = 25) -> bool:
+    """Allow the verified Java/Spring exception only for well-defined entry roles."""
+    text = (description or "").lower()
+    is_java_spring = "java" in text and ("spring boot" in text or "springboot" in text)
+    is_entry_level = any(term in text for term in ("fresher", "entry-level", "entry level"))
+    salary_low, _ = salary_lpa_range(salary_text)
+    return is_java_spring and is_entry_level and salary_low is not None and salary_low >= minimum_lpa
+
+
 def skill_score(description: str, resume_text: str) -> int:
     skills = {"python", "django", "react", "next.js", "nextjs", "typescript", "javascript", "sql", "postgresql", "mysql", "redis", "celery", "docker", "rest", "api", "mongodb", "sentry", "ci/cd", "concurrency", "caching"}
     jd = description.lower()
@@ -70,6 +88,7 @@ class AnswerEngine:
             (("expected salary", "expected compensation", "expected ctc"), self.answers["expected_base_lpa"]),
             (("notice period",), self.answers.get("notice_period_days")),
             (("current salary", "current ctc", "current compensation"), self.answers.get("current_base_lpa")),
+            (("fewer than 30", "under 30 employees", "startup with fewer"), "Yes" if self.answers.get("open_to_startup_under_30_employees") else None),
             (("sponsorship",), "No" if not self.answers["requires_sponsorship"] else "Yes"),
             (("authorized to work", "work authorization"), "Yes" if self.answers["work_authorized_india"] else "No"),
             (("relocate", "relocation"), "Yes" if self.answers["willing_to_relocate"] else "No"),

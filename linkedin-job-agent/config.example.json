@@ -9,20 +9,34 @@
     "resume": "../resume/Aryan Agrawal Resume.pdf"
   },
   "search": {
-    "titles": ["Backend Engineer", "Software Development Engineer", "Full Stack Engineer", "Python Developer", "Django Developer"],
-    "locations": ["Bengaluru", "Remote India", "India"],
-    "minimum_base_lpa": 28,
+    "titles": ["Backend Engineer", "Software Development Engineer", "Full Stack Engineer", "Python Developer", "Django Developer", "Java Spring Boot Fresher"],
+    "locations": ["Bangalore", "Mumbai", "Pune", "Gurgaon", "Noida", "Remote India"],
+    "minimum_base_lpa": 25,
     "minimum_match_score": 65,
     "posted_within_hours": 72,
     "max_jobs_per_run": 20
   },
   "answers": {
     "notice_period_days": null,
+    "joining_time_after_offer_min_days": null,
+    "joining_time_after_offer_max_days": null,
+    "notice_period_negotiable": null,
+    "notice_period_buyback_available": null,
     "current_base_lpa": null,
     "expected_base_lpa": 28,
+    "open_to_startup_under_30_employees": null,
+    "expected_salary_rule": "if disclosed maximum < 28 LPA, use that maximum; otherwise use max(28 LPA, 80% of disclosed maximum); default to 28 LPA when undisclosed",
     "work_authorized_india": true,
     "requires_sponsorship": false,
     "willing_to_relocate": true
+  },
+  "role_exceptions": {
+    "java_spring_boot": {
+      "enabled": true,
+      "seniority": ["fresher", "entry-level"],
+      "minimum_disclosed_salary_lpa": 25,
+      "answer_java_experience_truthfully": true
+    }
   },
   "automation": {
     "mode": "dry-run",
