@@ -18,9 +18,50 @@ cp config.example.json config.json
 .venv/bin/playwright install chromium
 .venv/bin/job-agent self-test
 .venv/bin/job-agent run
+.venv/bin/job-agent run --platform hirist
 ```
 
 The first live browser run opens a dedicated profile. Sign in manually; the tool never stores a LinkedIn password. Results are written to `data/events.jsonl`.
+
+## Firecrawl hybrid discovery
+
+Firecrawl is the preferred discovery provider. It searches public job boards and
+returns compact Markdown, while the existing authenticated browser remains
+responsible for LinkedIn/Hirist forms, resume upload and final submission.
+
+Set the API key in the environment; never put it in `config.json` or commit it:
+
+```bash
+export FIRECRAWL_API_KEY='fc-your-key'
+.venv/bin/job-agent discover
+.venv/bin/job-agent run --platform linkedin
+```
+
+`discovery.provider` defaults to `auto`: Firecrawl is used when the key exists,
+and the LinkedIn browser search is used when it does not. Set it to `firecrawl`
+to fail fast instead of falling back, or `browser` to disable Firecrawl.
+
+The public discovery path excludes micro1, canonicalizes URLs before ledger
+deduplication, caps description context, and never sends LinkedIn credentials or
+browser cookies to Firecrawl. A discovery failure is recorded in the ledger
+before automatic browser fallback.
+
+## Low-token browser mode
+
+The browser layer compacts each job description before scoring it. It keeps only
+decision evidence (experience, mandatory skills, salary, location, work mode and
+notice-period lines), removes duplicates, and caps the result at 2,400 characters.
+Application inspection likewise returns only visible form labels, types, required
+flags and current values instead of serializing the complete LinkedIn page.
+
+This is different from generic web scraping: it runs inside the authenticated
+Playwright session but sends structured records to the decision layer. Full DOM or
+accessibility snapshots should be reserved for a failed selector or an unfamiliar
+form, never used as the normal discovery path.
+
+Hirist uses the same compact pipeline through a separate adapter. Its URL and
+selectors are configurable under `platforms.hirist`; this isolates site-specific
+markup from salary, matching, answer and ledger rules.
 
 ## Before enabling submissions
 

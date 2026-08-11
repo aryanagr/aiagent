@@ -6,7 +6,8 @@ from urllib.parse import quote_plus
 
 from playwright.sync_api import Page, sync_playwright
 
-from .core import AnswerEngine, Job, Ledger, java_spring_fresher_exception, salary_eligible, skill_score
+from .core import AnswerEngine, Job, Ledger, compact_job_description, java_spring_fresher_exception, salary_eligible, skill_score
+from .firecrawl import FirecrawlDiscovery, FirecrawlError
 
 
 class LinkedInAgent:
@@ -15,6 +16,21 @@ class LinkedInAgent:
         self.answer_engine = AnswerEngine(config, resume_text)
 
     def discover(self, page: Page) -> list[Job]:
+        provider = self.config.get("discovery", {}).get("provider", "browser")
+        if provider in {"auto", "firecrawl"}:
+            firecrawl = FirecrawlDiscovery(self.config)
+            if firecrawl.available:
+                try:
+                    return firecrawl.discover()
+                except FirecrawlError as exc:
+                    self.ledger.append("discovery_fallback", {"provider": "firecrawl", "reason": str(exc)})
+                    if provider == "firecrawl":
+                        raise
+            elif provider == "firecrawl":
+                raise FirecrawlError("FIRECRAWL_API_KEY is not configured")
+        return self.discover_with_browser(page)
+
+    def discover_with_browser(self, page: Page) -> list[Job]:
         found: dict[str, Job] = {}
         search = self.config["search"]
         for title in search["titles"]:
@@ -33,10 +49,34 @@ class LinkedInAgent:
         page.wait_for_timeout(1000)
         job.title = self._text(page, "h1") or job.title
         job.company = self._text(page, ".job-details-jobs-unified-top-card__company-name") or job.company
-        job.description = self._text(page, ".jobs-description-content__text") or self._text(page, "main")
+        raw_description = self._text(page, ".jobs-description-content__text") or self._text(page, "article")
+        job.description = compact_job_description(raw_description)
         salary_match = re.search(r"(?:₹|INR)[^\n]{0,80}(?:LPA|lakhs?|lacs?)", job.description, re.I)
         job.salary_text = salary_match.group(0) if salary_match else ""
         return job
+
+    def compact_form_fields(self, page: Page) -> list[dict[str, str | bool]]:
+        """Return visible application fields without serializing the full modal DOM."""
+        fields: list[dict[str, str | bool]] = []
+        for element in page.locator("input, select, textarea").all():
+            if not element.is_visible():
+                continue
+            field_id = element.get_attribute("id") or ""
+            label = ""
+            if field_id:
+                label_node = page.locator(f"label[for='{field_id}']").first
+                if label_node.count():
+                    label = label_node.inner_text().strip()
+            label = label or element.get_attribute("aria-label") or element.get_attribute("name") or ""
+            if not label:
+                continue
+            fields.append({
+                "label": label[:180],
+                "type": element.get_attribute("type") or element.evaluate("el => el.tagName.toLowerCase()"),
+                "required": element.get_attribute("required") is not None or element.get_attribute("aria-required") == "true",
+                "value": (element.input_value() or "")[:120],
+            })
+        return fields
 
     @staticmethod
     def _text(page: Page, selector: str) -> str:
@@ -59,7 +99,8 @@ class LinkedInAgent:
             for job in jobs:
                 if self.ledger.seen(job.url):
                     continue
-                job = self.enrich(page, job)
+                if not job.description:
+                    job = self.enrich(page, job)
                 eligible = salary_eligible(job.salary_text, self.config["search"]["minimum_base_lpa"])
                 score = skill_score(job.description, self.resume_text)
                 java_exception = java_spring_fresher_exception(job.description, job.salary_text)

@@ -19,6 +19,36 @@ class Job:
     source: str = "linkedin_jobs"
 
 
+REQUIREMENT_LINE_TERMS = (
+    "experience", "required", "requirement", "must have", "skills", "qualification",
+    "python", "django", "flask", "fastapi", "react", "next.js", "typescript",
+    "javascript", "node.js", "java", "spring", "salary", "lpa", "notice period",
+    "location", "remote", "hybrid", "on-site", "onsite", "work authorization",
+)
+
+
+def compact_job_description(text: str, max_chars: int = 2400) -> str:
+    """Keep decision-relevant JD lines and discard repeated prose/page chrome."""
+    normalized = re.sub(r"[ \t]+", " ", text or "")
+    selected: list[str] = []
+    seen: set[str] = set()
+    total = 0
+    for raw_line in normalized.splitlines():
+        line = raw_line.strip(" •·-\t")
+        lowered = line.lower()
+        if len(line) < 3 or not any(term in lowered for term in REQUIREMENT_LINE_TERMS):
+            continue
+        key = re.sub(r"\W+", " ", lowered).strip()
+        if key in seen:
+            continue
+        seen.add(key)
+        selected.append(line)
+        total += len(line) + 1
+        if total >= max_chars:
+            break
+    return "\n".join(selected)[:max_chars].rstrip()
+
+
 SALARY_PATTERNS = [
     re.compile(r"(?:₹|INR\s*)?\s*(\d+(?:\.\d+)?)\s*(?:-|to|–)\s*(\d+(?:\.\d+)?)\s*(?:LPA|lakhs?|lacs?)", re.I),
     re.compile(r"(?:₹|INR\s*)?\s*(\d+(?:\.\d+)?)\s*(?:LPA|lakhs?|lacs?)", re.I),

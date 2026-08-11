@@ -16,15 +16,25 @@
     "posted_within_hours": 72,
     "max_jobs_per_run": 20
   },
+  "discovery": {
+    "provider": "auto",
+    "firecrawl": {
+      "query_template": "\"{title}\" remote India jobs apply",
+      "results_per_query": 10,
+      "max_description_chars": 2400,
+      "country": "IN",
+      "exclude_terms": ["micro1"]
+    }
+  },
   "answers": {
-    "notice_period_days": null,
-    "joining_time_after_offer_min_days": null,
-    "joining_time_after_offer_max_days": null,
-    "notice_period_negotiable": null,
-    "notice_period_buyback_available": null,
-    "current_base_lpa": null,
+    "notice_period_days": 60,
+    "joining_time_after_offer_min_days": 30,
+    "joining_time_after_offer_max_days": 60,
+    "notice_period_negotiable": true,
+    "notice_period_buyback_available": true,
+    "current_base_lpa": 19,
     "expected_base_lpa": 28,
-    "open_to_startup_under_30_employees": null,
+    "open_to_startup_under_30_employees": true,
     "expected_salary_rule": "if disclosed maximum < 28 LPA, use that maximum; otherwise use max(28 LPA, 80% of disclosed maximum); default to 28 LPA when undisclosed",
     "work_authorized_india": true,
     "requires_sponsorship": false,
@@ -41,10 +51,23 @@
   "automation": {
     "mode": "dry-run",
     "linkedin_profile_dir": ".browser-profile",
+    "hirist_profile_dir": ".hirist-browser-profile",
     "headless": false,
     "submit_applications": false,
     "send_outreach": false,
     "daily_application_limit": 20,
     "daily_outreach_limit": 10
+  },
+  "platforms": {
+    "hirist": {
+      "base_url": "https://www.hirist.tech",
+      "search_url_template": "https://www.hirist.tech/search?query={query}",
+      "selectors": {
+        "job_links": "a[href*='/j/'], a[href*='/job/'], a[href*='/jobs/']",
+        "title": "h1",
+        "company": "[data-testid='company-name'], .company-name, .job-company-name",
+        "description": "[data-testid='job-description'], .job-description, .job-detail-description, article"
+      }
+    }
   }
 }
