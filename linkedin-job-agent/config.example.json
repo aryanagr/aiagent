@@ -34,6 +34,7 @@
     "notice_period_buyback_available": true,
     "current_base_lpa": 19,
     "expected_base_lpa": 28,
+    "combined_python_framework_experience_years": 3,
     "open_to_startup_under_30_employees": true,
     "expected_salary_rule": "if disclosed maximum < 28 LPA, use that maximum; otherwise use max(28 LPA, 80% of disclosed maximum); default to 28 LPA when undisclosed",
     "work_authorized_india": true,
