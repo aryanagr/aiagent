@@ -1,0 +1,18 @@
+# Local Python/runtime artifacts
+.venv/
+.pytest_cache/
+**/__pycache__/
+*.egg-info/
+
+# Candidate-specific configuration and application history
+/config.json
+/data/
+
+# Legacy local package/test copies; maintained source lives under linkedin-job-agent/
+/src/
+/tests/
+
+# Local browser and credentials
+.browser-profile/
+.env
+*.log

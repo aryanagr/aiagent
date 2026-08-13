@@ -1,0 +1,74 @@
+{
+  "candidate": {
+    "name": "Aryan Agrawal",
+    "email": "aryanag1700@gmail.com",
+    "linkedin_application_email": "aagrawal001703@gmail.com",
+    "phone": "+91 7297976010",
+    "city": "Bangalore, India",
+    "years_experience": 4,
+    "resume": "../resume/Aryan Agrawal Resume.pdf"
+  },
+  "search": {
+    "titles": ["Backend Engineer", "Software Development Engineer", "Full Stack Engineer", "Python Developer", "Django Developer", "Java Spring Boot Fresher"],
+    "locations": ["Bangalore", "Mumbai", "Pune", "Gurgaon", "Noida", "Remote India"],
+    "minimum_base_lpa": 25,
+    "minimum_match_score": 65,
+    "posted_within_hours": 72,
+    "max_jobs_per_run": 20
+  },
+  "discovery": {
+    "provider": "auto",
+    "firecrawl": {
+      "query_template": "\"{title}\" remote India jobs apply",
+      "results_per_query": 10,
+      "max_description_chars": 2400,
+      "country": "IN",
+      "exclude_terms": ["micro1"]
+    }
+  },
+  "answers": {
+    "notice_period_days": 60,
+    "joining_time_after_offer_min_days": 30,
+    "joining_time_after_offer_max_days": 60,
+    "notice_period_negotiable": true,
+    "notice_period_buyback_available": true,
+    "current_base_lpa": 19,
+    "expected_base_lpa": 28,
+    "combined_python_framework_experience_years": 3,
+    "open_to_startup_under_30_employees": true,
+    "expected_salary_rule": "if disclosed maximum < 28 LPA, use that maximum; otherwise use max(28 LPA, 80% of disclosed maximum); default to 28 LPA when undisclosed",
+    "work_authorized_india": true,
+    "requires_sponsorship": false,
+    "willing_to_relocate": true
+  },
+  "role_exceptions": {
+    "java_spring_boot": {
+      "enabled": true,
+      "seniority": ["fresher", "entry-level"],
+      "minimum_disclosed_salary_lpa": 25,
+      "answer_java_experience_truthfully": true
+    }
+  },
+  "automation": {
+    "mode": "dry-run",
+    "linkedin_profile_dir": ".browser-profile",
+    "hirist_profile_dir": ".hirist-browser-profile",
+    "headless": false,
+    "submit_applications": false,
+    "send_outreach": false,
+    "daily_application_limit": 20,
+    "daily_outreach_limit": 10
+  },
+  "platforms": {
+    "hirist": {
+      "base_url": "https://www.hirist.tech",
+      "search_url_template": "https://www.hirist.tech/search?query={query}",
+      "selectors": {
+        "job_links": "a[href*='/j/'], a[href*='/job/'], a[href*='/jobs/']",
+        "title": "h1",
+        "company": "[data-testid='company-name'], .company-name, .job-company-name",
+        "description": "[data-testid='job-description'], .job-description, .job-detail-description, article"
+      }
+    }
+  }
+}

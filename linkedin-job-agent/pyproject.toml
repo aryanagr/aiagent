@@ -1,0 +1,26 @@
+[project]
+name = "linkedin-job-agent"
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = ["playwright>=1.45", "pypdf>=5.0", "python-dotenv>=1.0"]
+
+[project.optional-dependencies]
+ai = ["openai>=1.40"]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+job-agent = "job_agent.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
