@@ -1,0 +1,30 @@
+name: Job review (no LinkedIn login)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate configuration without LinkedIn access
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          cfg = json.loads(Path('job_search.json').read_text())
+          assert cfg['automation'].get('discovery_only') is True
+          print('Review-only workflow: no LinkedIn browser, login, or application submission.')
+          print('Target roles:', ', '.join(cfg['job_preferences']['target_roles']))
+          PY
+      - name: Upload existing job tracker for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: existing-job-tracker
+          path: |
+            Applications_Master.csv
+            Applications_Master.xlsx
+          if-no-files-found: warn
+          retention-days: 1
